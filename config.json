@@ -1,0 +1,11 @@
+{
+    "SNOWFLAKE": {
+    	"account": "pljbcel-gw79467",
+    	"user": "kzhang",
+    	"password": "rfk.bnt3vjx9MUR4qzt",
+    	"role": "accountadmin",
+    	"warehouse": "COMPUTE_WH",
+    	"database": "BCP",
+    	"schema": "SELF_STORAGE"
+    }
+}
