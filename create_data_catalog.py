@@ -2,27 +2,38 @@ from snowflake.snowpark import Session
 from snowflake.snowpark.exceptions import SnowparkClientException, SnowparkSQLException
 import pandas as pd
 import json
+import logging
 
 
-conn_params = {
-    'user': 'kzhang',
-    'password': 'rfk.bnt3vjx9MUR4qzt',
-    'account': 'pljbcel-gw79467',
-    'warehouse': 'COMPUTE_WH',
-    'database': 'BCP',
-    'schema': 'INFORMATION_SCHEMA'
-}
+def load_config(config_file):
+    with open(config_file, 'r') as file:
+        return json.load(file)
 
 def create_session(configs):
+    private_key_path = configs.get("private_key_path")
+    if private_key_path:
+        # Read the private key file
+        with open(private_key_path, "rb") as key_file:
+            private_key = key_file.read()
+        configs["private_key"] = private_key
+        # Remove private_key_path from configs to avoid conflicts
+        configs.pop("private_key_path", None)
+    # Ensure no password is included for key-pair authentication
+    configs.pop("password", None)
+
     try:
-        session = Session.builder.configs(configs['SNOWFLAKE']).create()
-        print('Snowflake session created successfully')
+        session = Session.builder.configs(configs).create()
+        logging.info('Snowflake session created successfully')
         return session
     except (SnowparkClientException, SnowparkSQLException) as e:
-        print(f'Error creating Snowflake session: {e}')
+        logging.error(f'Error creating Snowflake session: {e}')
         raise
 
-session = Session.builder.configs(conn_params).create()
+config_path = './config.json'
+config = load_config(config_path)
+session_params = config['SNOWFLAKE']
+session = create_session(session_params)
+
 
 queries = {
     'schemas': """

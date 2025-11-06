@@ -1,10 +1,10 @@
 {
     "SNOWFLAKE": {
     	"account": "pljbcel-gw79467",
-    	"user": "kzhang",
-    	"password": "rfk.bnt3vjx9MUR4qzt",
-    	"role": "accountadmin",
-    	"warehouse": "COMPUTE_WH",
+    	"user": "BCP_SERV",
+    	"private_key_path": "key/rsa_key.der",
+    	"role": "SERVICE_USER",
+    	"warehouse": "SERVICE_USER_WH",
     	"database": "BCP",
     	"schema": "SELF_STORAGE"
     }
